@@ -1,4 +1,35 @@
-{% comment %} {% load static %} {% endcomment %}
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  <h1>To-Do List</h1>
+
+  <a href="{% url 'add' %}" class="btn btn-primary">Add New Task</a>
+
+  {% if todos %}
+    <ul class="task-list">
+      {% for todo in todos %}
+        <li class="task-item">
+          <form method="POST" action="{% url 'toggle' todo.id %}" class="task-checkbox-form">
+            {% csrf_token %}
+            <input type="checkbox" name="completed" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %}>
+          </form>
+          <span class="task-title {% if todo.completed %}completed{% endif %}">
+            {{ todo.title }} - Due: {{ todo.due_date|date:"M d, Y" }}
+          </span>
+          <a href="{% url 'update' todo.id %}" class="btn btn-secondary">Edit</a>
+          <a href="{% url 'delete' todo.id %}" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No tasks yet! Add one above.</p>
+  {% endif %}
+{% endblock %}
+
+
+{% comment %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +48,7 @@
     <ul>
         {% for todo in todos %}
             {% comment %} <li>{{ todo.title }}</li> {% endcomment %}
-            <li>
+            {% comment %} <li>
                 <form action="{% url 'update' todo.id %}" method="POST">
                     {% csrf_token %}
                     <input type="text" name="title" value="{{ todo.title }}">
@@ -31,4 +62,4 @@
         {% endfor %}
     </ul>
 </body>
-</html>
+</html> {% endcomment %} 

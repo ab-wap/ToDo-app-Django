@@ -4,13 +4,16 @@ from .forms import TodoForm
 # Create your views here.
 def home_view(request):
     todos = Todos.objects.all() 
+    return render(request, 'index.html', {'todos': todos})
+
+def add_view(request):
     form = TodoForm()
     if request.method == 'POST':
         form = TodoForm(request.POST)
         if form.is_valid():
             form.save()
-            # return redirect('home')
-    return render(request, 'index.html', {'todos': todos, 'form': TodoForm()})
+            return redirect('home')
+    return render(request, 'list_form.html', {'form': form})
 
 def delete_view(request, todo_id):
     todo = Todos.objects.get(id=todo_id)
@@ -26,5 +29,11 @@ def update_view(request, todo_id):
         form = TodoForm(request.POST, instance=todo)
         if form.is_valid():
             form.save()
-            # return redirect('home')
+            return redirect('home')
     return render(request, 'index.html', {'todos': Todos.objects.all(), 'form': form})
+
+def toggle_view(request, todo_id):
+    todo = Todos.objects.get(id=todo_id)
+    todo.completed = not todo.completed
+    todo.save()
+    return redirect('home')
