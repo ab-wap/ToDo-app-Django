@@ -1,0 +1,29 @@
+# Python
+*.pyc
+__pycache__/
+
+# Django stuff:
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# Virtual environments
+env/
+venv/
+.venv/
+.env/
+
+# IDEs and editors
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Test/coverage
+.coverage
+.tox/
+.pytest_cache/
+
+# Local settings
+local_settings.py
