@@ -13,7 +13,7 @@ def add_view(request):
         if form.is_valid():
             form.save()
             return redirect('home')
-    return render(request, 'list_form.html', {'form': form})
+    return render(request, 'list_form.html', {'form': form, 'headline':'Add Task'})
 
 def delete_view(request, todo_id):
     todo = Todos.objects.get(id=todo_id)
@@ -30,7 +30,7 @@ def update_view(request, todo_id):
         if form.is_valid():
             form.save()
             return redirect('home')
-    return render(request, 'list_form.html', {'todo': todo, 'form': form})
+    return render(request, 'list_form.html', {'todo': todo, 'form': form, 'headline':'Update Task'})
 
 def toggle_view(request, todo_id):
     todo = Todos.objects.get(id=todo_id)
