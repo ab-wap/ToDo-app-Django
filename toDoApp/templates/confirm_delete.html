@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete{% endblock %}
+
+{% block content %}
+  <div class="delete-confirm">
+    <h1>Delete Task</h1>
+    <p>Are you sure you want to delete the task: <strong>{{ todo.title }}</strong>?</p>
+    <div class="delete-task-details">
+      {% comment %} {% if todo.due_date %}
+        <span class="due-date"> (Due: {{ todo.due_date|date:"M d, Y" }})</span>
+      {% endif %}
+      {% if todo.description %}
+        <p>{{ todo.description }}</p>
+      {% endif %} {% endcomment %}
+    </div>
+    <form method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Yes</button>
+      <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+{% endblock %}

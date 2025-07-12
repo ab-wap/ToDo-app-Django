@@ -20,7 +20,7 @@ def delete_view(request, todo_id):
     if request.method == 'POST':
         todo.delete()
         return redirect('home')
-    return render(request, 'index.html', {'todos': Todos.objects.all(), 'form': TodoForm()})
+    return render(request, 'confirm_delete.html', {'todo': todo})
 
 def update_view(request, todo_id):
     todo = Todos.objects.get(id=todo_id)
@@ -30,7 +30,7 @@ def update_view(request, todo_id):
         if form.is_valid():
             form.save()
             return redirect('home')
-    return render(request, 'index.html', {'todos': Todos.objects.all(), 'form': form})
+    return render(request, 'list_form.html', {'todo': todo, 'form': form})
 
 def toggle_view(request, todo_id):
     todo = Todos.objects.get(id=todo_id)

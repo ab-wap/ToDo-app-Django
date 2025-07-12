@@ -16,10 +16,11 @@
             <input type="checkbox" name="completed" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %}>
           </form>
           <span class="task-title {% if todo.completed %}completed{% endif %}">
-            {{ todo.title }} - Due: {{ todo.due_date|date:"M d, Y" }}
+            {{ todo.title }} 
+            {% comment %} - Due: {{ todo.due_date|date:"M d, Y" }} {% endcomment %}
           </span>
           <a href="{% url 'update' todo.id %}" class="btn btn-secondary">Edit</a>
-          <a href="{% url 'delete' todo.id %}" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
+          <a href="{% url 'delete' todo.id %}" class="btn btn-danger">Delete</a>
         </li>
       {% endfor %}
     </ul>
