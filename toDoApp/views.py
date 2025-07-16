@@ -10,7 +10,7 @@ from .models import Todos
 # Create your views here.
 @login_required(login_url='login')
 def home_view(request):
-    todos = Todos.objects.all()
+    todos = Todos.objects.filter(user=request.user).order_by('-updated_at')
     return render(request, 'home.html', {'todos': todos})
 
 @login_required(login_url='login')
@@ -19,13 +19,17 @@ def add_view(request):
     if request.method == 'POST':
         form = TodoForm(request.POST)
         if form.is_valid():
-            form.save()
+            todo = form.save(commit=False)
+            todo.user = request.user
+            todo.save()
             return redirect('home')
     return render(request, 'list_form.html', {'form': form, 'headline':'Add Task'})
 
 @login_required(login_url='login')
 def delete_view(request, todo_id):
-    todo = Todos.objects.get(id=todo_id)
+    todo = Todos.objects.get(id=todo_id, user=request.user)
+    if not todo:
+        return redirect('home')
     if request.method == 'POST':
         todo.delete()
         return redirect('home')
@@ -33,7 +37,9 @@ def delete_view(request, todo_id):
 
 @login_required(login_url='login')
 def update_view(request, todo_id):
-    todo = Todos.objects.get(id=todo_id)
+    todo = Todos.objects.get(id=todo_id, user=request.user)
+    if not todo:
+        return redirect('home')
     form = TodoForm(instance=todo)
     if request.method == 'POST':
         form = TodoForm(request.POST, instance=todo)

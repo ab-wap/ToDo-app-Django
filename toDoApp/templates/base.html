@@ -13,10 +13,11 @@
       <div class="container">
         <a href="{% url 'home' %}" class="logo">To-Do App</a>
         {% if user.is_authenticated %}
-            <form action="{% url 'logout' %}" method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger" style="float:right">Log Out</button>
-            </form>
+          <p class="logo" style="float:right;">@{{ user.username }}</p>
+          <form action="{% url 'logout' %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger" style="float:right">Log Out</button>
+          </form>
         {% endif %}
       </div>
     </nav>

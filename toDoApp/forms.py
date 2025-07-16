@@ -5,15 +5,20 @@ from .models import Todos
 class TodoForm(forms.ModelForm):
     class Meta:
         model = Todos
-        fields = 'title',
+        fields = ['title', 'description']
         labels = {
             'title' : 'New List',
+            'description': 'Description',
         }
         widgets = {
             'title' : forms.TextInput(attrs={
                 'placeholder': 'Add a new task',
                 'class': 'form-control',
-            })
+            }),
+            'description': forms.Textarea(attrs={
+                'placeholder': 'Add a description (optional)',
+                'class': 'form-control',
+            }),
         }
 
 class RegisterForm(forms.ModelForm):
