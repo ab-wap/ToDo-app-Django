@@ -10,8 +10,9 @@ from .models import Todos
 # Create your views here.
 @login_required(login_url='login')
 def home_view(request):
-    todos = Todos.objects.filter(user=request.user).order_by('-updated_at')
-    return render(request, 'home.html', {'todos': todos})
+    todos_active = Todos.objects.filter(user=request.user, completed=False).order_by('-updated_at')
+    todos_completed = Todos.objects.filter(user=request.user, completed=True).order_by('-updated_at')
+    return render(request, 'home.html', {'todos_active': todos_active, 'todos_completed': todos_completed})
 
 @login_required(login_url='login')
 def add_view(request):

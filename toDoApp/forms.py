@@ -7,7 +7,7 @@ class TodoForm(forms.ModelForm):
         model = Todos
         fields = ['title', 'description']
         labels = {
-            'title' : 'New List',
+            'title' : 'Title',
             'description': 'Description',
         }
         widgets = {

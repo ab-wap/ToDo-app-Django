@@ -26,6 +26,8 @@
   text-decoration: none;
 }
 
+
+
 /* Buttons */
 .btn {
   padding: 8px 12px;
@@ -65,6 +67,16 @@
 }
 
 /* Task List */
+.detail_link{
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+.detail_link:hover {
+  color: #007bff;
+}
+
 .task-list {
   list-style: none;
   margin-top: 20px;
