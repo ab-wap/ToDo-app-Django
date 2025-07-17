@@ -1,38 +1,62 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block title %}To-Do App{% endblock %}</title>
+
+  <!-- Google Fonts & Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 <body>
   <header>
     <nav class="navbar">
-      <div class="container">
+      <div class="container" style="display:flex; justify-content: space-between; align-items: center;">
         <a href="{% url 'home' %}" class="logo">To-Do App</a>
-        {% if user.is_authenticated %}
-          <p class="logo" style="float:right;">@{{ user.username }}</p>
-          <form action="{% url 'logout' %}" method="POST">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-danger" style="float:right">Log Out</button>
-          </form>
-        {% endif %}
+        <div class="nav-right">
+          {% if user.is_authenticated %}
+            <span class="user-badge">@{{ user.username }}</span>
+            <form action="{% url 'logout' %}" method="POST" class="inline-form logout-form">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-secondary">Log Out</button>
+            </form>
+          {% else %}
+            <a href="{% url 'login' %}" class="btn btn-primary">Log In</a>
+            <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a>
+          {% endif %}
+          {% comment %} <button class="theme-toggle-btn" id="themeToggleHeader" title="Toggle Light/Dark Mode"></button> {% endcomment %}
+        </div>
       </div>
     </nav>
   </header>
 
   <main class="container">
-    {% block content %}
-    <!-- Page-specific content goes here -->
-    {% endblock %}
+    <button class="theme-toggle-btn" id="themeToggleHeader" title="Toggle Light/Dark Mode"></button>
+    {% block content %}{% endblock %}
   </main>
 
   <footer class="footer">
     <div class="container">
-      <p>© 2025</p>
+      <p>© 2025 To-Do App</p>
     </div>
   </footer>
+
+  <!-- Theme toggling JS -->
+  <script>
+    const themeBtnHeader = document.getElementById('themeToggleHeader');
+    const storedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', storedTheme);
+
+    themeBtnHeader && themeBtnHeader.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+  </script>
 </body>
 </html>

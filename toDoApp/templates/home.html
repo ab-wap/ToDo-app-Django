@@ -3,53 +3,68 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  <h1>To-Do List</h1><br>
+  <div class="tasks-page-header">
+  <h1>My Tasks</h1>
+  <button class="btn btn-primary add-task-btn" style="margin: auto; display: block;" onclick="location.href='{% url 'add' %}'">
+    +
+  </button>
+  {% comment %} <button class="theme-toggle-btn" id="themeToggle" title="Toggle Light/Dark Mode"></button> {% endcomment %}
+</div>
 
-  <a href="{% url 'add' %}" class="btn btn-primary">Add New Task</a>
-
+<div class="tasks-section">
   {% if todos_active %}
-    <ul class="task-list">
+    <h2 class="section-title">Active</h2><br>
+    <ul class="fancy-task-list">
       {% for todo in todos_active %}
-        <li class="task-item">
-          <form method="POST" action="{% url 'toggle' todo.id %}" class="task-checkbox-form">
+        <li class="fancy-task-item" onclick="window.location='{% url 'update' todo.id %}'">
+          <form method="POST" action="{% url 'toggle' todo.id %}" class="pretty-checkbox-form" onclick="event.stopPropagation();">
             {% csrf_token %}
-            <input type="checkbox" name="completed" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %}>
+            <input type="checkbox" name="completed" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %} />
           </form>
-          <span class="task-title {% if todo.completed %}completed{% endif %}">
-            <a href="{% url 'update' todo.id %}" class="detail_link">
-              {{ todo.title }} : 
-              {{ todo.updated_at }} 
-            </a>
-            {% comment %} - Due: {{ todo.due_date|date:"M d, Y" }} {% endcomment %}
-          </span>
-          {% comment %} <a href="{% url 'update' todo.id %}" class="btn btn-secondary">Edit</a> {% endcomment %}
-          <a href="{% url 'delete' todo.id %}" class="btn btn-danger">Delete</a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p><br>No tasks yet! Add one above.</p>
-  {% endif %} 
-  
-  {% if todos_completed %}
-    <h2><br>Completed</h2>
-    <ul class="task-list">
-      {% for todo in todos_completed %}
-        <li class="task-item">
-          <form method="POST" action="{% url 'toggle' todo.id %}" class="task-checkbox-form">
+          <div class="fancy-task-content">
+            <span class="fancy-task-title">{{ todo.title }}</span>
+            <span class="fancy-task-desc">{{ todo.description }}</span>
+            <span class="fancy-task-meta">updated {{ todo.updated_at }}</span>
+          </div>
+          <form method="POST" action="{% url 'delete' todo.id %}" class="delete-icon-form" onclick="event.stopPropagation();">
             {% csrf_token %}
-            <input type="checkbox" name="completed" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %}>
+            <button type="submit" class="delete-icon-btn" title="Delete Task">
+              <span class="material-icons">delete</span>
+            </button>
           </form>
-          <span class="task-title {% if todo.completed %}completed{% endif %}">
-            {{ todo.title }} 
-            {% comment %} - Due: {{ todo.due_date|date:"M d, Y" }} {% endcomment %}
-          </span>
-          {% comment %} <a href="{% url 'update' todo.id %}" class="btn btn-secondary">Edit</a> {% endcomment %}
-          <a href="{% url 'delete' todo.id %}" class="btn btn-danger">Delete</a>
         </li>
       {% endfor %}
     </ul>
   {% endif %}
+</div>
+
+<div class="tasks-section">
+  {% if todos_completed %}
+    <h2 class="section-title">Completed</h2><br>
+    <ul class="fancy-task-list completed">
+      {% for todo in todos_completed %}
+        <li class="fancy-task-item completed" >
+          <form method="POST" action="{% url 'toggle' todo.id %}" class="pretty-checkbox-form" onclick="event.stopPropagation();">
+            {% csrf_token %}
+            <input type="checkbox" name="completed" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %} />
+          </form>
+          <div class="fancy-task-content">
+            <span class="fancy-task-title">{{ todo.title }}</span>
+            <span class="fancy-task-desc">{{ todo.description }}</span>
+            <span class="fancy-task-meta">updated {{ todo.updated_at }}</span>
+          </div>
+          {% comment %} <form method="POST" action="{% url 'delete' todo.id %}" class="delete-icon-form" onclick="event.stopPropagation();">
+            {% csrf_token %}
+            <button type="submit" class="delete-icon-btn" title="Delete Task">
+              <span class="material-icons">delete</span>
+            </button>
+          </form> {% endcomment %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>
+
 {% endblock %}
 
 

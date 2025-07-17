@@ -3,22 +3,36 @@
 {% block title %}Add Task{% endblock %}
 
 {% block content %}
-  <h1>{{headline}}</h1><br>
-
-  <form method="POST" class="task-form">
+  <div class="task-detail-card">
+  <form method="POST" autocomplete="off">
     {% csrf_token %}
-    <table>
-      <tr>
-        <td style="text-align:center">Title: </td>
-        <td> {{form.title}}</td>
-      </tr>
-      <tr>
-        <td style="vertical-align: top;">Description: </td>
-        <td> {{form.description}}</td>
-      </tr>
-    </table>
-    <br>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+    <div class="task-detail-row">
+      <label>Title</label>
+      {{ form.title }}
+    </div>
+    <div class="task-detail-row">
+      <label>Description</label>
+      {{ form.description }}
+    </div>
+    {% if todo %}
+      <div class="task-detail-row">
+        <label>Last Updated</label>
+        <span class="task-detail-meta">{{ todo.updated_at }}</span>
+      </div>
+    {% endif %}
+    <div class="task-detail-actions">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+      {% if todo %}
+      <form action="{% url 'delete' todo.id %}" method="POST" class="inline-form">
+        {% csrf_token %}
+        <button type="submit" class="delete-icon-btn" title="Delete Task">
+          <span class="material-icons">delete</span>
+        </button>
+      </form>
+      {% endif %}
+    </div>
   </form>
+</div>
+
 {% endblock %}
