@@ -40,6 +40,18 @@ body {
   margin:  auto;
   padding: 20px;
 }
+/* .container {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* When visible, reset opacity and transform */
+/* .container.visible {
+  opacity: 1;
+  transform: translateY(0);
+}  */
+
 
 /*********** Navbar ***********/
 .navbar {
@@ -122,12 +134,13 @@ body {
 .add-task-btn {
   background: var(--accent-gradient);
   color: #fff;
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   padding: auto;
   border-radius: 40%;
   width: 50px;
   height: 50px;
   box-shadow: var(--shadow);
+  font-weight: bolder;
   /* position: fixed; */
   /* bottom: 20px; */
   /* right: 20px; */
@@ -168,7 +181,7 @@ body {
   margin-bottom: 18px;
   border-radius: 16px;
   box-shadow: var(--shadow);
-  transition: box-shadow 0.25s var(--transition), background 0.17s;
+  /* transition: box-shadow 0.25s var(--transition), background 0.17s; */
   position: relative;
   animation: fadeInUp 0.48s var(--transition);
   cursor: pointer;
@@ -193,6 +206,8 @@ body {
 .fancy-task-content {
   flex: 1 1 0%;
   padding-right: 8px;
+  cursor: pointer;
+  user-select: none;
 }
 .fancy-task-title {
   font-size: 1.08em;
@@ -205,19 +220,40 @@ body {
 .fancy-task-desc {
   font-size: 0.96em;
   color: var(--font-faded);
-  opacity: 0.81;
+  /* opacity: 0.81; */
   margin: 1px 0 5px;
-  max-width: 330px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   /* font-style: italic; */
   display: block;
+  transition: max-height 0.35s var(--transition), white-space 0.32s, background 0.32s;
+  background: none;
+  border-radius: 7px;
+  padding: 2px 2px;
+  cursor: pointer;
 }
+
+.fancy-task-extra {
+  margin: 0;
+  max-height: 0;
+  /* opacity: 0; */
+  overflow: scroll;
+  transition: max-height 0.5s ease-in-out, opacity 0.22s;
+  /* will-change: max-height; */
+}
+
+.fancy-task-item.expanded .fancy-task-extra {
+  max-height: 200px;
+  /* opacity: 1; */
+  margin-top: 0;
+  /* padding: 7px 0 6px 0; */
+  background: #e3f2fd55;
+  box-shadow: 0 4px 14px #3398db13;
+  border-radius: 8px;
+}
+
 .fancy-task-meta {
   font-size: 0.8em;
   color: var(--font-faded);
-  opacity: 0.66;
+  /* opacity: 0.66; */
   display: block;
   font-weight: 500;
   margin-top: 3px;
@@ -228,6 +264,22 @@ body {
   display: flex;
   align-items: center;
 }
+.edit-icon-btn {
+  display: flex;
+  align-items: center;
+  color: #50b1e7; /* same blue accent as trash icon */
+  font-size: 1.7em;
+  margin-right: 8px; /* spacing before delete icon */
+  cursor: pointer;
+  transition: color 0.18s, transform 0.18s;
+  text-decoration: none; /* remove underline */
+}
+
+.edit-icon-btn:hover {
+  color: #3a8cca; /* slightly darker blue on hover */
+  transform: scale(1.1) rotate(-5deg);
+}
+
 .delete-icon-btn {
   background: none;
   border: none;

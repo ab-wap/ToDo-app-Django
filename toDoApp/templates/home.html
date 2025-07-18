@@ -16,16 +16,21 @@
     <h2 class="section-title">Active</h2><br>
     <ul class="fancy-task-list">
       {% for todo in todos_active %}
-        <li class="fancy-task-item" onclick="window.location='{% url 'update' todo.id %}'">
+        <li class="fancy-task-item" onclick="toggleTaskExpand(this)" data-task-id="{{ todo.id }}">
           <form method="POST" action="{% url 'toggle' todo.id %}" class="pretty-checkbox-form" onclick="event.stopPropagation();">
             {% csrf_token %}
-            <input type="checkbox" name="completed" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %} />
+            <input type="checkbox" name="completed" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %}>
           </form>
-          <div class="fancy-task-content">
+          <div class="fancy-task-content" >
             <span class="fancy-task-title">{{ todo.title }}</span>
-            <span class="fancy-task-desc">{{ todo.description }}</span>
-            <span class="fancy-task-meta">updated {{ todo.updated_at }}</span>
+            <div class="fancy-task-extra">
+              <span class="fancy-task-desc">{{ todo.description }}</span>
+              <span class="fancy-task-meta">updated {{ todo.updated_at }}</span>
+            </div>
           </div>
+          <a href="{% url 'update' todo.id %}" class="edit-icon-btn" title="Edit Task" onclick="event.stopPropagation();">
+            <span class="material-icons">edit</span>
+          </a>
           <form method="POST" action="{% url 'delete' todo.id %}" class="delete-icon-form" onclick="event.stopPropagation();">
             {% csrf_token %}
             <button type="submit" class="delete-icon-btn" title="Delete Task">
@@ -50,8 +55,8 @@
           </form>
           <div class="fancy-task-content">
             <span class="fancy-task-title">{{ todo.title }}</span>
-            <span class="fancy-task-desc">{{ todo.description }}</span>
-            <span class="fancy-task-meta">updated {{ todo.updated_at }}</span>
+            {% comment %} <span class="fancy-task-desc">{{ todo.description }}</span>
+            <span class="fancy-task-meta"> {{ todo.updated_at }}</span> {% endcomment %}
           </div>
           {% comment %} <form method="POST" action="{% url 'delete' todo.id %}" class="delete-icon-form" onclick="event.stopPropagation();">
             {% csrf_token %}

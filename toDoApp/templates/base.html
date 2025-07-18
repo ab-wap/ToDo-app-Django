@@ -57,6 +57,20 @@
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
     });
+
+    function toggleTaskExpand(contentDiv) {
+      const item = contentDiv.closest('.fancy-task-item');
+      item.classList.toggle('expanded');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.querySelector('.container');
+        if (container) {
+          // Trigger reflow for CSS transition to work correctly
+          void container.offsetWidth;
+          container.classList.add('visible');
+        }
+      });
+
   </script>
 </body>
 </html>
