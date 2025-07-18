@@ -21,7 +21,7 @@
 }
 
 * {
-  /* box-sizing: border-box; */
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -31,8 +31,13 @@ body {
   color: var(--font);
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
   letter-spacing: 0.01em;
-  transition: background-color var(--transition), color var(--transition);
+  transition: background-color var(--transition), color var(--transition), box-shadow var(--transition);
   overflow-x: hidden;
+}
+html, body {
+  transition: 
+    background-color var(--transition), 
+    color var(--transition);
 }
 
 .container {
@@ -181,16 +186,39 @@ body {
   margin-bottom: 18px;
   border-radius: 16px;
   box-shadow: var(--shadow);
-  /* transition: box-shadow 0.25s var(--transition), background 0.17s; */
+  transition: box-shadow 0s var(--transition), background 0.37s;
   position: relative;
   animation: fadeInUp 0.48s var(--transition);
   cursor: pointer;
 }
+
 .fancy-task-item:hover {
   /* No scale or move, only deeper shadow */
   box-shadow: 0 8px 24px rgba(51,152,219,0.30), 0 1px 10px #50b1e740;
   background: #e9f5fc;
 }
+[data-theme="dark"] .fancy-task-item {
+  background: var(--surface); /* which is #1b2530 */
+}
+[data-theme="dark"] .fancy-task-item.expanded .fancy-task-extra {
+  background: var(--surface); /* match list background exactly */
+  box-shadow: none; /* or very subtle shadow that matches */
+  padding: 10px 0; /* adjust padding if needed */
+}
+
+/* Base dark mode item hover */
+[data-theme="dark"] .fancy-task-item:hover {
+  background: #2d3142; /* container hover background */
+  box-shadow: 0 8px 24px rgba(64, 125, 194, 0.6); /* container shadow */
+}
+
+/* Expanded description/meta background changes on hover */
+[data-theme="dark"] .fancy-task-item.expanded:hover .fancy-task-extra {
+  background: #2d3142; /* slightly lighter for expanded area */
+  /* box-shadow: 0 8px 24px rgba(64, 125, 194, 0.7); */
+}
+
+
 .fancy-task-item.completed {
   opacity: 0.58;
   text-decoration: line-through;
@@ -401,7 +429,14 @@ body, html {
   background: var(--surface);
   box-shadow: 0 0 6px var(--accent);
 }
-
+/* Dark mode - inputs use light font, with dark background */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  color: var(--font); /* light color for dark mode */
+  background: var(--surface-light); /* dark background */
+  border-color: var(--border);
+}
 .btn-full {
   width: 100%;
   margin-top: 14px;

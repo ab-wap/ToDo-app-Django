@@ -35,7 +35,11 @@
   </header>
 
   <main class="container">
-    <button class="theme-toggle-btn" id="themeToggleHeader" title="Toggle Light/Dark Mode"></button>
+    {% comment %} <button class="theme-toggle-btn" id="themeToggleHeader" title="Toggle Light/Dark Mode"></button> {% endcomment %}
+    <button class="theme-toggle-btn" id="themeToggleHeader" title="Toggle Light/Dark Mode">
+      <span class="material-icons theme-icon"></span>
+    </button>
+
     {% block content %}{% endblock %}
   </main>
 

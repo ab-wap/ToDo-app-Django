@@ -25,7 +25,7 @@
             <span class="fancy-task-title">{{ todo.title }}</span>
             <div class="fancy-task-extra">
               <span class="fancy-task-desc">{{ todo.description }}</span>
-              <span class="fancy-task-meta">updated {{ todo.updated_at }}</span>
+              <span class="fancy-task-meta">last updated : {{ todo.updated_at }}</span>
             </div>
           </div>
           <a href="{% url 'update' todo.id %}" class="edit-icon-btn" title="Edit Task" onclick="event.stopPropagation();">
