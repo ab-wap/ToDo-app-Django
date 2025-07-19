@@ -20,11 +20,13 @@
   --shadow: 0 6px 34px rgba(51,152,219, 0.25);
 }
 
-* {
+/* Universal box-sizing for all elements */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 /*********** Layout & Typography ***********/
 body {
   background: var(--surface-light);
@@ -35,28 +37,13 @@ body {
   overflow-x: hidden;
 }
 html, body {
-  transition: 
-    background-color var(--transition), 
-    color var(--transition);
+  transition: background-color var(--transition), color var(--transition);
 }
-
 .container {
   max-width: 90%;
-  margin:  auto;
+  margin: auto;
   padding: 20px;
 }
-/* .container {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-/* When visible, reset opacity and transform */
-/* .container.visible {
-  opacity: 1;
-  transform: translateY(0);
-}  */
-
 
 /*********** Navbar ***********/
 .navbar {
@@ -95,6 +82,7 @@ html, body {
 .logout-form, .inline-form {
   display: inline;
 }
+
 /*********** Buttons ***********/
 .btn, .btn-primary, .btn-secondary, .btn-danger {
   padding: 9px 16px;
@@ -110,7 +98,6 @@ html, body {
   box-shadow: 0 2px 10px rgba(51,152,219,0.08);
   outline: none;
 }
-
 .btn-primary {
   background: var(--accent-gradient);
   color: #fff;
@@ -119,7 +106,6 @@ html, body {
 .btn-secondary:focus {
   background: linear-gradient(90deg, #47ace7 0%, #3398db 100%);
 }
-
 .btn-secondary {
   background: #daeaf6;
   color: var(--accent);
@@ -128,7 +114,6 @@ html, body {
   background: #b1d5ef;
   color: #23648a;
 }
-
 .btn-danger {
   background: #e95765;
   color: #fff;
@@ -146,10 +131,9 @@ html, body {
   height: 50px;
   box-shadow: var(--shadow);
   font-weight: bolder;
-  /* position: fixed; */
-  /* bottom: 20px; */
-  /* right: 20px; */
 }
+
+/*********** Theme Toggle Button ***********/
 .theme-toggle-btn {
   width: 30px;
   height: 30px;
@@ -169,7 +153,6 @@ html, body {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke="white"/><path d="M12 2v2m0 16v2m8-10h2M2 12H4m15.07-7.07l-1.42 1.42M5.95 18.05l-1.42 1.42m0-15.56l1.42 1.42M18.05 18.05l1.42 1.42" stroke="white"/></svg>');
   border-color: #31597f;
 }
-
 /*********** Task List Cards ***********/
 .fancy-task-list {
   margin: 0;
@@ -181,56 +164,32 @@ html, body {
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  background: var(--surface);
+  background-color: var(--surface);
   padding: 17px 20px;
   margin-bottom: 18px;
   border-radius: 16px;
   box-shadow: var(--shadow);
-  transition: box-shadow 0s var(--transition), background 0.37s;
+  transition: box-shadow 0s var(--transition), background-color 0.37s;
   position: relative;
   animation: fadeInUp 0.48s var(--transition);
   cursor: pointer;
 }
-
 .fancy-task-item:hover {
-  /* No scale or move, only deeper shadow */
   box-shadow: 0 8px 24px rgba(51,152,219,0.30), 0 1px 10px #50b1e740;
-  background: #e9f5fc;
+  background-color: #e9f5fc;
 }
 [data-theme="dark"] .fancy-task-item {
-  background: var(--surface); /* which is #1b2530 */
+  background-color: var(--surface); /* #1b2530 */
 }
-[data-theme="dark"] .fancy-task-item.expanded .fancy-task-extra {
-  background: var(--surface); /* match list background exactly */
-  box-shadow: none; /* or very subtle shadow that matches */
-  padding: 10px 0; /* adjust padding if needed */
-}
-
-/* Base dark mode item hover */
 [data-theme="dark"] .fancy-task-item:hover {
-  background: #2d3142; /* container hover background */
-  box-shadow: 0 8px 24px rgba(64, 125, 194, 0.6); /* container shadow */
+  background-color: #2d3142;
+  box-shadow: 0 8px 24px rgba(64, 125, 194, 0.6);
 }
-
-/* Expanded description/meta background changes on hover */
-[data-theme="dark"] .fancy-task-item.expanded:hover .fancy-task-extra {
-  background: #2d3142; /* slightly lighter for expanded area */
-  /* box-shadow: 0 8px 24px rgba(64, 125, 194, 0.7); */
-}
-
-
 .fancy-task-item.completed {
   opacity: 0.58;
   text-decoration: line-through;
 }
-.pretty-checkbox-form input[type="checkbox"] {
-  accent-color: var(--accent);
-  width: 1.37em;
-  height: 1.37em;
-  margin-top: 6px;
-  transition: border-color var(--transition), filter var(--transition);
-  filter: drop-shadow(0 1px 4px #3398db33);
-}
+
 .fancy-task-content {
   flex: 1 1 0%;
   padding-right: 8px;
@@ -248,11 +207,9 @@ html, body {
 .fancy-task-desc {
   font-size: 0.96em;
   color: var(--font-faded);
-  /* opacity: 0.81; */
   margin: 1px 0 5px;
-  /* font-style: italic; */
   display: block;
-  transition: max-height 0.35s var(--transition), white-space 0.32s, background 0.32s;
+  transition: max-height 0.35s var(--transition), white-space 0.32s, background-color 0.32s;
   background: none;
   border-radius: 7px;
   padding: 2px 2px;
@@ -262,31 +219,54 @@ html, body {
 .fancy-task-extra {
   margin: 0;
   max-height: 0;
-  /* opacity: 0; */
   overflow: scroll;
-  transition: max-height 0.5s ease-in-out, opacity 0.22s;
-  /* will-change: max-height; */
+  transition: max-height 0.5s ease-in-out, opacity 0.22s, background-color 0.37s;
 }
 
+/* Expanded state */
 .fancy-task-item.expanded .fancy-task-extra {
   max-height: 200px;
-  /* opacity: 1; */
   margin-top: 0;
-  /* padding: 7px 0 6px 0; */
-  background: #e3f2fd55;
+  background-color: #e3f2fd55;
   box-shadow: 0 4px 14px #3398db13;
   border-radius: 8px;
+}
+/* Expanded, dark mode */
+[data-theme="dark"] .fancy-task-item.expanded .fancy-task-extra {
+  background-color: var(--surface);
+  box-shadow: none;
+  /* margin-top: 0; */
+  padding: 0;
+  
+}
+/* Expanded hover, dark mode */
+[data-theme="dark"] .fancy-task-item.expanded:hover .fancy-task-extra {
+  background-color: #2d3142;
+}
+
+/* Expanded hover, light mode */
+.fancy-task-item.expanded:hover .fancy-task-extra {
+  background-color: #e9f5fc;
 }
 
 .fancy-task-meta {
   font-size: 0.8em;
   color: var(--font-faded);
-  /* opacity: 0.66; */
   display: block;
   font-weight: 500;
   margin-top: 3px;
   font-style: italic;
 }
+
+.pretty-checkbox-form input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 1.37em;
+  height: 1.37em;
+  margin-top: 6px;
+  transition: border-color var(--transition), filter var(--transition);
+  filter: drop-shadow(0 1px 4px #3398db33);
+}
+
 .delete-icon-form {
   margin: 0 0 0 8px;
   display: flex;
@@ -295,19 +275,17 @@ html, body {
 .edit-icon-btn {
   display: flex;
   align-items: center;
-  color: #50b1e7; /* same blue accent as trash icon */
+  color: #50b1e7;
   font-size: 1.7em;
-  margin-right: 8px; /* spacing before delete icon */
+  margin-right: 8px;
   cursor: pointer;
   transition: color 0.18s, transform 0.18s;
-  text-decoration: none; /* remove underline */
+  text-decoration: none;
 }
-
 .edit-icon-btn:hover {
-  color: #3a8cca; /* slightly darker blue on hover */
+  color: #3a8cca;
   transform: scale(1.1) rotate(-5deg);
 }
-
 .delete-icon-btn {
   background: none;
   border: none;
@@ -331,7 +309,7 @@ body, html {
   overflow-y: visible;
   overflow-x: hidden;
 }
-::-webkit-scrollbar { width: 0 !important; display: none;}
+::-webkit-scrollbar { width: 0 !important; display: none; }
 * { scrollbar-width: none; }
 
 @media (max-width: 640px) {
@@ -339,6 +317,7 @@ body, html {
   .task-detail-card { padding: 16px 4px;}
   .fancy-task-item { padding: 12px 3px;}
 }
+
 /*********** Task Detail (Edit page) ***********/
 .task-detail-card {
   background: var(--surface);
@@ -361,7 +340,10 @@ body, html {
   margin-bottom: 3px;
   letter-spacing: 0.009em;
 }
-.task-detail-row input, .task-detail-row textarea {
+.task-detail-row input,
+.task-detail-row textarea {
+  width: 100%;
+  box-sizing: border-box;
   border: none;
   background: var(--surface-light);
   border-radius: 7px;
@@ -370,10 +352,23 @@ body, html {
   box-shadow: 0 1px 6px #50b1e713;
   font-weight: 500;
   margin-top: 2px;
+  color: var(--font);
+  transition: background-color var(--transition), color var(--transition), box-shadow var(--transition);
 }
-.task-detail-row input:focus, .task-detail-row textarea:focus {
+.task-detail-row input:focus,
+.task-detail-row textarea:focus {
   outline: 1.5px solid var(--accent);
   background: var(--surface);
+}
+[data-theme="dark"] .task-detail-row input,
+[data-theme="dark"] .task-detail-row textarea {
+  background: var(--surface-light);
+  color: var(--font);
+}
+[data-theme="dark"] .task-detail-row input:focus,
+[data-theme="dark"] .task-detail-row textarea:focus {
+  background: var(--surface);
+  color: var(--font);
 }
 .task-detail-meta {
   font-size: 0.93em;
@@ -397,6 +392,7 @@ body, html {
   box-shadow: var(--shadow);
   animation: fadeInUp 0.5s ease;
   text-align: center;
+  box-sizing: border-box;
 }
 .auth-form-centered h1 {
   margin-bottom: 28px;
@@ -414,29 +410,67 @@ body, html {
   margin-bottom: 6px;
   display: block;
 }
-.auth-form form p input {
+.auth-form form p input,
+.auth-form form p textarea,
+.auth-form form p select {
   width: 100%;
+  box-sizing: border-box;
   padding: 10px 15px;
   font-size: 1rem;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--surface-light);
-  transition: border-color 0.26s;
   margin-top: 2px;
+  color: var(--font);
+  transition: border-color 0.26s, background-color var(--transition), color var(--transition);
 }
-.auth-form form p input:focus {
+.auth-form form p input:focus,
+.auth-form form p textarea:focus,
+.auth-form form p select:focus {
   border-color: var(--accent);
   background: var(--surface);
-  box-shadow: 0 0 6px var(--accent);
+  color: var(--font);
 }
-/* Dark mode - inputs use light font, with dark background */
-[data-theme="dark"] input,
-[data-theme="dark"] textarea,
-[data-theme="dark"] select {
-  color: var(--font); /* light color for dark mode */
-  background: var(--surface-light); /* dark background */
-  border-color: var(--border);
+[data-theme="dark"] .auth-form form p input,
+[data-theme="dark"] .auth-form form p textarea,
+[data-theme="dark"] .auth-form form p select {
+  background: var(--surface-light);
+  color: var(--font);
 }
+[data-theme="dark"] .auth-form form p input:focus,
+[data-theme="dark"] .auth-form form p textarea:focus,
+[data-theme="dark"] .auth-form form p select:focus {
+  background: var(--surface);
+  color: var(--font);
+}
+
+/* Placeholder color for both modes */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: var(--font-faded);
+}
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder,
+[data-theme="dark"] select::placeholder {
+  color: var(--font-faded);
+}
+
+/* Autofill fix for browsers in dark mode */
+[data-theme="dark"] input:-webkit-autofill,
+[data-theme="dark"] textarea:-webkit-autofill,
+[data-theme="dark"] select:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px var(--surface-light) inset !important;
+  -webkit-text-fill-color: var(--font) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+[data-theme="dark"] input:-moz-autofill,
+[data-theme="dark"] textarea:-moz-autofill,
+[data-theme="dark"] select:-moz-autofill {
+  box-shadow: 0 0 0px 1000px var(--surface-light) inset !important;
+  color: var(--font) !important;
+}
+
 .btn-full {
   width: 100%;
   margin-top: 14px;

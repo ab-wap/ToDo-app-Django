@@ -4,7 +4,7 @@
 
 {% block content %}
   <div class="tasks-page-header">
-  <h1>My Tasks</h1>
+  <center><h1>My Tasks</h1></center><br>
   <button class="btn btn-primary add-task-btn" style="margin: auto; display: block;" onclick="location.href='{% url 'add' %}'">
     +
   </button>
@@ -24,7 +24,13 @@
           <div class="fancy-task-content" >
             <span class="fancy-task-title">{{ todo.title }}</span>
             <div class="fancy-task-extra">
-              <span class="fancy-task-desc">{{ todo.description }}</span>
+              <span class="fancy-task-desc">
+                {% if todo.description %}
+                  {{ todo.description }}
+                {% else %}
+                  no description...
+                {% endif %}
+              </span>
               <span class="fancy-task-meta">last updated : {{ todo.updated_at }}</span>
             </div>
           </div>
@@ -40,12 +46,14 @@
         </li>
       {% endfor %}
     </ul>
+  {% else %}
+    <h3 style="color: var(--font-faded);"><br>No active tasks found. Click the plus icon to add a task</h3>
   {% endif %}
 </div>
 
 <div class="tasks-section">
   {% if todos_completed %}
-    <h2 class="section-title">Completed</h2><br>
+    <h2 class="section-title"><br>Completed</h2><br>
     <ul class="fancy-task-list completed">
       {% for todo in todos_completed %}
         <li class="fancy-task-item completed" >
