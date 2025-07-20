@@ -10,7 +10,9 @@
   <!-- Delete Confirmation Popup -->
   <div id="confirm-dialog" class="popup-overlay" style="display: none;">
     <div class="popup-dialog">
+       <button id="popup-close-btn" type="button" class="popup-close-btn" aria-label="Close confirmation dialog">&times;</button>
       <div class="popup-dialog-content">
+        <center><h3>Delete Task</h3><br></center>
         <p>Are you sure you want to delete this task?</p>
       </div>
       <div class="popup-actions">
@@ -30,17 +32,23 @@
 
 <div class="tasks-section">
   {% if todos_active %}
-    <h2 class="section-title">Active</h2><br>
+    
     <ul class="fancy-task-list">
+      <h2 class="section-title">Active</h2><br>
       {% for todo in todos_active %}
-        <li class="fancy-task-item" onclick="toggleTaskExpand(this)" data-task-id="{{ todo.id }}">
+        <li class="fancy-task-item 
+                  {% if todo.priority == 'low' %} priority-low{% endif %}
+                  {% if todo.priority == 'medium' %} priority-medium{% endif %}
+                  {% if todo.priority == 'high' %} priority-high{% endif %}
+                  {% if todo.due_date and todo.due_date < today %} overdue-task{% endif %}" 
+            onclick="toggleTaskExpand(this)" data-task-id="{{ todo.id }}">
           <form method="POST" action="{% url 'toggle' todo.id %}" class="pretty-checkbox-form" onclick="event.stopPropagation();">
             {% csrf_token %}
             <input type="checkbox" name="completed" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %}>
           </form>
           <div class="fancy-task-content" >
             <span class="fancy-task-title">{{ todo.title }}</span>
-            <div class="fancy-task-extra">
+            <div class="fancy-task-extra" style="background: transparent;">
               <span class="fancy-task-desc">
                 {% if todo.description %}
                   {{ todo.description }}
@@ -50,7 +58,7 @@
               </span>
               
             </div>
-            <div class="fancy-task-extra">
+            <div class="fancy-task-extra" style="background: transparent; box-shadow: none;">
               <span class="fancy-task-meta">last updated : {{ todo.updated_at }}</span>
               <span class="fancy-task-meta">Priority: {{ todo.get_priority_display }}</span>
               {% if todo.due_date %}
@@ -82,10 +90,16 @@
 
 <div class="tasks-section">
   {% if todos_completed %}
-    <h2 class="section-title"><br>Completed</h2><br>
+    
     <ul class="fancy-task-list completed">
+      <h2 class="section-title"><br>Completed</h2><br>
       {% for todo in todos_completed %}
-        <li class="fancy-task-item completed" >
+        <li class="fancy-task-item 
+                  {% if todo.priority == 'low' %} priority-low{% endif %}
+                  {% if todo.priority == 'medium' %} priority-medium{% endif %}
+                  {% if todo.priority == 'high' %} priority-high{% endif %}
+                  {% if todo.due_date and todo.due_date < today %} overdue-task{% endif %} 
+                  completed" >
           <form method="POST" action="{% url 'toggle' todo.id %}" class="pretty-checkbox-form" onclick="event.stopPropagation();">
             {% csrf_token %}
             <input type="checkbox" name="completed" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %} />
@@ -132,16 +146,23 @@
     const overlay = document.getElementById('confirm-dialog');
     const cancelBtn = document.getElementById('cancel-btn');
     const deleteBtn = document.getElementById('delete-btn');
+    const closeBtn = document.getElementById('popup-close-btn');
     overlay.style.display = "flex";
+
     function close() { overlay.style.display = "none"; }
+
     const cancelHandler = () => { close(); cleanup(); };
     const confirmHandler = () => { close(); cleanup(); onConfirm && onConfirm(); };
+    const closeHandler = () => { close(); cleanup(); };
+    
     function cleanup() {
       cancelBtn.removeEventListener('click', cancelHandler);
       deleteBtn.removeEventListener('click', confirmHandler);
+      closeBtn.removeEventListener('click', closeHandler);
     }
     cancelBtn.addEventListener('click', cancelHandler);
     deleteBtn.addEventListener('click', confirmHandler);
+    closeBtn.addEventListener('click', closeHandler);
   }
 </script>
 {% endblock %}

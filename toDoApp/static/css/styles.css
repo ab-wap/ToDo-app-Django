@@ -42,7 +42,7 @@ html, body {
 .container {
   max-width: 90%;
   margin: auto;
-  padding: 20px;
+  padding: 1.5rem;
 }
 
 /*********** Navbar ***********/
@@ -124,27 +124,29 @@ html, body {
 .add-task-btn {
   background: var(--accent-gradient);
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 2rem;
   padding: auto;
-  border-radius: 40%;
-  width: 50px;
-  height: 50px;
-  box-shadow: var(--shadow);
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+  box-shadow: 0 6px 24px rgba(51,152,219,0.52);
+  /* box-shadow: var(--shadow); */
   font-weight: bolder;
   position: fixed;
   bottom: 2rem;
-  right: 2rem;
+  left: 5%;
+  /* left: 50%; */
   z-index: 1000;
 }
 
 /*********** Theme Toggle Button ***********/
 .theme-toggle-btn {
-  width: 30px;
-  height: 30px;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   background: var(--surface);
-  border: 1.5px solid var(--border);
-  box-shadow: var(--shadow);
+  border: 1.5px solid white;
+  box-shadow: white;
   position: absolute;
   right: 4em;
   cursor: pointer;
@@ -155,7 +157,7 @@ html, body {
 }
 [data-theme="dark"] .theme-toggle-btn {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke="white"/><path d="M12 2v2m0 16v2m8-10h2M2 12H4m15.07-7.07l-1.42 1.42M5.95 18.05l-1.42 1.42m0-15.56l1.42 1.42M18.05 18.05l1.42 1.42" stroke="white"/></svg>');
-  border-color: #31597f;
+  border-color: #1f3447;
 }
 /* sucess popup */
 .popup-success {
@@ -169,7 +171,7 @@ html, body {
   border-radius: 34px;
   font-size: 1.07rem;
   font-weight: 600;
-  z-index: 1000;
+  z-index: 1001;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.28s, transform 0.28s;
@@ -181,6 +183,23 @@ html, body {
 }
 
 /*********** Confirm Delete Popup ***********/
+.popup-close-btn {
+  position:relative;
+  top: -20px;
+  left: 340px;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--font-faded, #888);
+  cursor: pointer;
+  transition: color 0.25s ease;
+  z-index: 1300;
+}
+.popup-close-btn:hover {
+  color: var(--accent, #3398db);
+}
 .popup-overlay {
   position: fixed;
   inset: 0;
@@ -211,7 +230,8 @@ html, body {
 
 /*********** Task List Cards ***********/
 .fancy-task-list {
-  margin: 0;
+  width: 80%;
+  margin: 0 auto;
   padding: 0;
   list-style: none;
   overflow: visible;
@@ -219,9 +239,9 @@ html, body {
 .fancy-task-item {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: 1.6rem;
   background-color: var(--surface);
-  padding: 17px 20px;
+  padding: 1.5rem 1.5rem;
   margin-bottom: 18px;
   border-radius: 16px;
   box-shadow: var(--shadow);
@@ -232,13 +252,13 @@ html, body {
 }
 .fancy-task-item:hover {
   box-shadow: 0 8px 24px rgba(51,152,219,0.30), 0 1px 10px #50b1e740;
-  background-color: #e9f5fc;
+  background-color: #dcf0fc;
 }
 [data-theme="dark"] .fancy-task-item {
   background-color: var(--surface); /* #1b2530 */
 }
 [data-theme="dark"] .fancy-task-item:hover {
-  background-color: #2d3142;
+  background-color: #1f2533;
   box-shadow: 0 8px 24px rgba(64, 125, 194, 0.6);
 }
 .fancy-task-item.completed {
@@ -263,7 +283,7 @@ html, body {
 .fancy-task-desc {
   font-size: 0.96em;
   color: var(--font-faded);
-  margin: 1px 0 5px;
+  margin: 0rem 0.5rem 0.5rem 0.5rem;
   display: block;
   transition: max-height 0.35s var(--transition), white-space 0.32s, background-color 0.32s;
   background: none;
@@ -271,12 +291,14 @@ html, body {
   padding: 2px 2px;
   cursor: pointer;
   overflow-wrap: anywhere;
+  text-align: justify;
 }
 
 .fancy-task-extra {
   margin: 0;
   max-height: 0;
   overflow: scroll;
+
   transition: max-height 0.5s ease-in-out, opacity 0.22s, background-color 0.37s;
 }
 
@@ -358,6 +380,68 @@ html, body {
   transform: scale(1.08) rotate(-8deg);
 }
 
+/* --- Priority Highlights --- */
+.priority-low {
+  border-right: 6px solid #80cfa4;
+  border-left: 6px solid #80cfa4;
+  background: linear-gradient(0deg, #e8fdf1 0%, transparent 80%);
+}
+.priority-medium {
+  border-right: 6px solid #f4d35e;
+  border-left: 6px solid #f4d35e;
+  background: linear-gradient(0deg, #fefae0 0%, transparent 80%);
+}
+.priority-high {
+  border-right: 6px solid #e75b4a;
+  border-left: 6px solid #e75b4a;
+  background: linear-gradient(0deg, #feecec 0%, transparent 80%);
+}
+
+/* --- Overdue task highlight (will override priority bg) --- */
+.overdue-task {
+  /* border-right: 8px solid #e10626;
+  background: linear-gradient(90deg, #fff1f3 0%, #ffe0e3 80%);
+  Or, stronger: background: #ffe1e6; */
+  position: relative;
+}
+.overdue-task::before {
+  content: "OVERDUE";
+  color: #e10626;
+  font-weight: 600;
+  font-size: 0.92em;
+  position: absolute;
+  top: -3px;
+  right: 1px;
+  letter-spacing: 0.04em;
+  background: #fff;
+  padding: 1px 9px;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px #e1062218;
+}
+/* --- DARK MODE VARIANTS --- */
+[data-theme="dark"] .priority-low {
+  border-right: 6px solid #389c72;
+  border-left: 6px solid #389c72;
+  background: linear-gradient(0deg, #389c72 0%, transparent 1%);
+}
+[data-theme="dark"] .priority-medium {
+  border-right: 6px solid #a98e46;
+  border-left: 6px solid #a98e46;
+  background: linear-gradient(0deg, #a98e46 0%, transparent 1%);
+}
+[data-theme="dark"] .priority-high {
+  border-right: 6px solid #a75d52;
+  border-left: 6px solid #a75d52;
+  background: linear-gradient(0deg, #a75d52 0%, transparent 1%);
+}
+/* [data-theme="dark"] .overdue-task {
+  border-right: 8px solid #b42440;
+  background: linear-gradient(0deg, #332026 0%, #3B1E1A 1%);
+} */
+[data-theme="dark"] .overdue-task::before {
+  color: #d5294b;
+  background: var(--surface-light);
+}
 /* Hide scrollbar, vertical scroll only, no horizontal scroll */
 body, html {
   overflow-x: hidden !important;

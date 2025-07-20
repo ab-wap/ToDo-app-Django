@@ -7,13 +7,14 @@ from django.contrib.auth.models import User
 from .forms import TodoForm, RegisterForm, LoginForm
 from .models import Todos
 from django.contrib import messages
+from datetime import date
 
 # Create your views here.
 @login_required(login_url='login')
 def home_view(request):
     todos_active = Todos.objects.filter(user=request.user, completed=False).order_by('-updated_at')
     todos_completed = Todos.objects.filter(user=request.user, completed=True).order_by('-updated_at')
-    return render(request, 'home.html', {'todos_active': todos_active, 'todos_completed': todos_completed})
+    return render(request, 'home.html', {'todos_active': todos_active, 'todos_completed': todos_completed, 'today': date.today()})
 
 @login_required(login_url='login')
 def add_view(request):
