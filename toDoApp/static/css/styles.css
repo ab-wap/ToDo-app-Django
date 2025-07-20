@@ -131,6 +131,10 @@ html, body {
   height: 50px;
   box-shadow: var(--shadow);
   font-weight: bolder;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
 }
 
 /*********** Theme Toggle Button ***********/
@@ -153,6 +157,58 @@ html, body {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke="white"/><path d="M12 2v2m0 16v2m8-10h2M2 12H4m15.07-7.07l-1.42 1.42M5.95 18.05l-1.42 1.42m0-15.56l1.42 1.42M18.05 18.05l1.42 1.42" stroke="white"/></svg>');
   border-color: #31597f;
 }
+/* sucess popup */
+.popup-success {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, rgba(110, 193, 228, 0.7) 0%, rgba(51, 152, 219, 0.7) 100%);
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 34px;
+  font-size: 1.07rem;
+  font-weight: 600;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s, transform 0.28s;
+}
+.popup-success.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.03);
+  pointer-events: auto;
+}
+
+/*********** Confirm Delete Popup ***********/
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(100, 145, 205, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+.popup-dialog {
+  background: var(--surface, #fff);
+  color: var(--font, #1b2d3a);
+  min-width: 270px;
+  max-width: 95vw;
+  padding: 32px 22px 18px;
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(44,106,200,0.13);
+  animation: fadeInUp 0.22s;
+}
+.popup-dialog-content { font-size: 1.11em; margin-bottom: 22px;}
+.popup-actions { display: flex; gap: 13px; justify-content: flex-end; }
+
+@media (max-width: 500px) {
+  .popup-dialog { padding: 22px 4vw 12px;}
+  .popup-actions { flex-direction: column; gap: 0.65em;}
+}
+
+
 /*********** Task List Cards ***********/
 .fancy-task-list {
   margin: 0;
@@ -214,6 +270,7 @@ html, body {
   border-radius: 7px;
   padding: 2px 2px;
   cursor: pointer;
+  overflow-wrap: anywhere;
 }
 
 .fancy-task-extra {
@@ -237,7 +294,7 @@ html, body {
   box-shadow: none;
   /* margin-top: 0; */
   padding: 0;
-  
+
 }
 /* Expanded hover, dark mode */
 [data-theme="dark"] .fancy-task-item.expanded:hover .fancy-task-extra {
@@ -355,6 +412,10 @@ body, html {
   color: var(--font);
   transition: background-color var(--transition), color var(--transition), box-shadow var(--transition);
 }
+.task-detail-row textarea {
+  height: 6rem;
+  resize: vertical;
+}
 .task-detail-row input:focus,
 .task-detail-row textarea:focus {
   outline: 1.5px solid var(--accent);
@@ -380,6 +441,33 @@ body, html {
   align-items: center;
   gap: 12px;
   margin-top: 5px;
+}
+
+select.form-control,
+input.form-control,
+textarea.form-control {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-light);
+  color: var(--font);
+  margin-top: 2px;
+  transition: border-color 0.26s, background-color var(--transition);
+}
+select.form-control:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+/* Light mode: default/neutral icon */
+input[type="date"].form-control::-webkit-calendar-picker-indicator {
+  filter: invert(0.2) sepia(0.5) saturate(3) hue-rotate(175deg);
+  cursor: pointer;
+}
+/* Dark mode: make icon light */
+[data-theme="dark"] input[type="date"].form-control::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.4) sepia(0.25) saturate(0.75) hue-rotate(200deg);
 }
 
 /*********** Auth Forms ***********/

@@ -5,10 +5,12 @@ from .models import Todos
 class TodoForm(forms.ModelForm):
     class Meta:
         model = Todos
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'priority', 'due_date']
         labels = {
             'title' : 'Title',
             'description': 'Description',
+            'priority': 'Priority',
+            'due_date': 'Due Date',
         }
         widgets = {
             'title' : forms.TextInput(attrs={
@@ -17,6 +19,13 @@ class TodoForm(forms.ModelForm):
             }),
             'description': forms.Textarea(attrs={
                 'placeholder': 'Add a description (optional)',
+                'class': 'form-control',
+            }),
+            'priority': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+            'due_date': forms.DateInput(attrs={
+                'type': 'date',
                 'class': 'form-control',
             }),
         }

@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .forms import TodoForm, RegisterForm, LoginForm
 from .models import Todos
+from django.contrib import messages
 
 # Create your views here.
 @login_required(login_url='login')
@@ -23,6 +24,7 @@ def add_view(request):
             todo = form.save(commit=False)
             todo.user = request.user
             todo.save()
+            messages.success(request, 'Task added successfully!')
             return redirect('home')
     return render(request, 'list_form.html', {'form': form, 'headline':'Add Task'})
 
@@ -33,6 +35,7 @@ def delete_view(request, todo_id):
         return redirect('home')
     if request.method == 'POST':
         todo.delete()
+        messages.success(request, 'Task deleted!')
         return redirect('home')
     return render(request, 'confirm_delete.html', {'todo': todo})
 
@@ -46,6 +49,7 @@ def update_view(request, todo_id):
         form = TodoForm(request.POST, instance=todo)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Task updated successfully!')
             return redirect('home')
     return render(request, 'list_form.html', {'todo': todo, 'form': form, 'headline':'Update Task'})
 

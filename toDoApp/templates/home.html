@@ -3,6 +3,23 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+  <div id="task-success-popup" class="popup-success" style="display:none;">
+    {% comment %} for success messages {% endcomment %}
+  </div>
+  
+  <!-- Delete Confirmation Popup -->
+  <div id="confirm-dialog" class="popup-overlay" style="display: none;">
+    <div class="popup-dialog">
+      <div class="popup-dialog-content">
+        <p>Are you sure you want to delete this task?</p>
+      </div>
+      <div class="popup-actions">
+        <button id="cancel-btn" type="button" class="btn btn-secondary">Cancel</button>
+        <button id="delete-btn" type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+
   <div class="tasks-page-header">
   <center><h1>My Tasks</h1></center><br>
   <button class="btn btn-primary add-task-btn" style="margin: auto; display: block;" onclick="location.href='{% url 'add' %}'">
@@ -31,17 +48,29 @@
                   no description...
                 {% endif %}
               </span>
+              
+            </div>
+            <div class="fancy-task-extra">
               <span class="fancy-task-meta">last updated : {{ todo.updated_at }}</span>
+              <span class="fancy-task-meta">Priority: {{ todo.get_priority_display }}</span>
+              {% if todo.due_date %}
+                <span class="fancy-task-meta">Due: {{ todo.due_date }}</span>
+              {% else %}
+                <span class="fancy-task-meta">No due date</span>
+              {% endif %}
             </div>
           </div>
           <a href="{% url 'update' todo.id %}" class="edit-icon-btn" title="Edit Task" onclick="event.stopPropagation();">
             <span class="material-icons">edit</span>
           </a>
-          <form method="POST" action="{% url 'delete' todo.id %}" class="delete-icon-form" onclick="event.stopPropagation();">
+          {% comment %} <button class="delete-icon-btn" title="Delete Task" onclick="event.stopPropagation(); showConfirmDialog(() => { document.getElementById('delete-form-{{ todo.id }}').submit(); })">
+            <span class="material-icons">delete</span>
+          </button> {% endcomment %}
+          <button type="button" class="delete-icon-btn" title="Delete Task" onclick="event.stopPropagation(); showConfirmDialog(function(){ document.getElementById('delete-form-{{ todo.id }}').submit(); });">
+            <span class="material-icons">delete</span>
+          </button>
+          <form id="delete-form-{{ todo.id }}" method="POST" action="{% url 'delete' todo.id %}" style="display:none;">
             {% csrf_token %}
-            <button type="submit" class="delete-icon-btn" title="Delete Task">
-              <span class="material-icons">delete</span>
-            </button>
           </form>
         </li>
       {% endfor %}
@@ -77,7 +106,44 @@
     </ul>
   {% endif %}
 </div>
+<script>
+  function showTaskSuccessPopup(msg) {
+    const el = document.getElementById("task-success-popup");
+    el.textContent = msg;
+    el.style.display = "block";
+    el.classList.add("show");
+    setTimeout(() => {
+      el.classList.remove("show");
+      setTimeout(()=>{ el.style.display = "none"; }, 350);
+    }, 1000); // 1 seconds
+  }
 
+  {% if messages %}
+      {% for msg in messages %}
+        showTaskSuccessPopup("{{ msg|escapejs }}");
+      {% endfor %}
+  {% endif %}
+
+  /**
+  * showConfirmDialog(() => { ... });
+  * Example: showConfirmDialog(function(){ document.getElementById('delete-form-42').submit(); });
+  */
+  function showConfirmDialog(onConfirm) {
+    const overlay = document.getElementById('confirm-dialog');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const deleteBtn = document.getElementById('delete-btn');
+    overlay.style.display = "flex";
+    function close() { overlay.style.display = "none"; }
+    const cancelHandler = () => { close(); cleanup(); };
+    const confirmHandler = () => { close(); cleanup(); onConfirm && onConfirm(); };
+    function cleanup() {
+      cancelBtn.removeEventListener('click', cancelHandler);
+      deleteBtn.removeEventListener('click', confirmHandler);
+    }
+    cancelBtn.addEventListener('click', cancelHandler);
+    deleteBtn.addEventListener('click', confirmHandler);
+  }
+</script>
 {% endblock %}
 
 
