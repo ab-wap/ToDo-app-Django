@@ -16,6 +16,19 @@ def home_view(request):
     todos_completed = Todos.objects.filter(user=request.user, completed=True).order_by('-updated_at')
     return render(request, 'home.html', {'todos_active': todos_active, 'todos_completed': todos_completed, 'today': date.today()})
 
+# @login_required(login_url='login')
+# def filter_view(request, filter):
+#     if filter == 'active':
+#         todos = Todos.objects.filter(user=request.user, completed=False).order_by('-updated_at')
+#     elif filter == 'completed':
+#         todos = Todos.objects.filter(user=request.user, completed=True).order_by('-updated_at')
+#     elif filter == 'today':
+#         todos = Todos.objects.filter(user=request.user, due_date=date.today()).order_by('-updated_at')
+#     elif filter == 'overdue':
+#         todos = Todos.objects.filter(user=request.user, due_date__lt=date.today()).order_by('-updated_at')
+#     else:
+#         return render(request, 'home.html', {'todos_active': todos, 'todos_completed': [], 'today': date.today()})
+
 @login_required(login_url='login')
 def add_view(request):
     form = TodoForm()

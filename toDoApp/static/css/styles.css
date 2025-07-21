@@ -245,10 +245,11 @@ html, body {
   margin-bottom: 18px;
   border-radius: 16px;
   box-shadow: var(--shadow);
-  transition: box-shadow 0s var(--transition), background-color 0.37s;
+  /* transition: box-shadow 0s var(--transition), background-color 0.7s; */
   position: relative;
   animation: fadeInUp 0.48s var(--transition);
   cursor: pointer;
+
 }
 .fancy-task-item:hover {
   box-shadow: 0 8px 24px rgba(51,152,219,0.30), 0 1px 10px #50b1e740;
@@ -384,17 +385,17 @@ html, body {
 .priority-low {
   border-right: 6px solid #80cfa4;
   border-left: 6px solid #80cfa4;
-  background: linear-gradient(0deg, #e8fdf1 0%, transparent 80%);
+  background: linear-gradient(90deg, #e8fdf1 0%, transparent 80%);
 }
 .priority-medium {
   border-right: 6px solid #f4d35e;
   border-left: 6px solid #f4d35e;
-  background: linear-gradient(0deg, #fefae0 0%, transparent 80%);
+  background: linear-gradient(90deg, #fefae0 0%, transparent 80%);
 }
 .priority-high {
   border-right: 6px solid #e75b4a;
   border-left: 6px solid #e75b4a;
-  background: linear-gradient(0deg, #feecec 0%, transparent 80%);
+  background: linear-gradient(90deg, #feecec 0%, transparent 80%);
 }
 
 /* --- Overdue task highlight (will override priority bg) --- */
