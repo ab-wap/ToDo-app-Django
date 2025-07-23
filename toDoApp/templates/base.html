@@ -20,26 +20,43 @@
         <div class="nav-right">
           {% if user.is_authenticated %}
             <span class="user-badge">@{{ user.username }}</span>
-            <form action="{% url 'logout' %}" method="POST" class="inline-form logout-form">
+            <button type="button" class="btn btn-secondary" onclick="event.stopPropagation(); showLogoutConfirmDialog(function() {document.getElementById('logout-form').submit(); });">Log Out</button>
+            <form id="logout-form" action="{% url 'logout' %}" method="POST" class="inline-form logout-form" style="display: none;">
               {% csrf_token %}
-              <button type="submit" class="btn btn-secondary">Log Out</button>
             </form>
           {% else %}
             <a href="{% url 'login' %}" class="btn btn-primary">Log In</a>
             <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a>
           {% endif %}
           {% comment %} <button class="theme-toggle-btn" id="themeToggleHeader" title="Toggle Light/Dark Mode"></button> {% endcomment %}
-        </div>
+          <button class="theme-toggle-btn" id="themeToggleHeader" title="Toggle Light/Dark Mode">
+            <span class="material-icons theme-icon"></span>
+          </button>
       </div>
+        
+      </div>
+      
     </nav>
   </header>
 
   <main class="container">
     {% comment %} <button class="theme-toggle-btn" id="themeToggleHeader" title="Toggle Light/Dark Mode"></button> {% endcomment %}
-    <button class="theme-toggle-btn" id="themeToggleHeader" title="Toggle Light/Dark Mode">
-      <span class="material-icons theme-icon"></span>
-    </button>
+    
 
+    <!-- Logout Confirmation Popup -->
+    <div id="logout-confirm-dialog" class="popup-overlay" style="display: none;">
+      <div class="popup-dialog">
+        <button id="logout-popup-close-btn" type="button" class="popup-close-btn" aria-label="Close confirmation dialog">&times;</button>
+        <div class="popup-dialog-content">
+          <center><h3>Log Out</h3><br></center>
+          <p>Are you sure you want to log out?</p>
+        </div>
+        <div class="popup-actions">
+          <button id="logout-cancel-btn" type="button" class="btn btn-secondary">Cancel</button>
+          <button id="logout-btn" type="button" class="btn btn-danger">Log Out</button>
+        </div>
+      </div>
+    </div>
     {% block content %}{% endblock %}
   </main>
 
@@ -74,7 +91,52 @@
           container.classList.add('visible');
         }
       });
+      
+      function showLogoutConfirmDialog(onConfirm) {
+        const overlay = document.getElementById('logout-confirm-dialog');
+        const cancelBtn = document.getElementById('logout-cancel-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const closeBtn = document.getElementById('logout-popup-close-btn');
+        overlay.style.display = "flex";
 
+        function close() { overlay.style.display = "none"; }
+
+        const cancelHandler = () => { close(); cleanup(); };
+        const confirmHandler = () => { close(); cleanup(); onConfirm && onConfirm(); };
+        const closeHandler = () => { close(); cleanup(); };
+        
+        function cleanup() {
+          cancelBtn.removeEventListener('click', cancelHandler);
+          logoutBtn.removeEventListener('click', confirmHandler);
+          closeBtn.removeEventListener('click', closeHandler);
+        }
+        cancelBtn.addEventListener('click', cancelHandler);
+        logoutBtn.addEventListener('click', confirmHandler);
+        closeBtn.addEventListener('click', closeHandler);
+      }
   </script>
+  <script>
+    let lastScrollY = window.scrollY;
+    const navbar = document.querySelector('.navbar');
+    const addBtn = document.querySelector('.add-task-btn'); // adjust selector if different
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < lastScrollY) {
+        // Scrolling UP — show
+        navbar.style.transform = "translateY(0)";
+        if (addBtn) addBtn.style.transform = "translateY(0)";
+      } 
+      else {
+        // Scrolling DOWN — hide
+        navbar.style.transform = "translateY(-100%)";
+        if (addBtn) addBtn.style.transform = "translateY(200%)"; // push button off screen
+      }
+
+      lastScrollY = currentScrollY;
+    });
+  </script>
+
 </body>
 </html>

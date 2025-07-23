@@ -20,6 +20,9 @@
   --shadow: 0 6px 34px rgba(51,152,219, 0.25);
 }
 
+html{
+  scroll-behavior: smooth;;
+}
 /* Universal box-sizing for all elements */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -35,6 +38,7 @@ body {
   letter-spacing: 0.01em;
   transition: background-color var(--transition), color var(--transition), box-shadow var(--transition);
   overflow-x: hidden;
+  padding-top: 6rem;
 }
 html, body {
   transition: background-color var(--transition), color var(--transition);
@@ -47,11 +51,15 @@ html, body {
 
 /*********** Navbar ***********/
 .navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1100;
   background: var(--accent-gradient);
   box-shadow: var(--shadow);
   border-bottom: 2px solid var(--border);
   min-height: 60px;
-  transition: background var(--transition);
+  transition: background var(--transition), transform 0.3s ease;
   padding: 0 0;
 }
 .logo {
@@ -104,7 +112,9 @@ html, body {
 }
 .btn-primary:hover,
 .btn-secondary:focus {
-  background: linear-gradient(90deg, #47ace7 0%, #3398db 100%);
+  background: linear-gradient(90deg, #56acee 0%, #3b8ad8 100%);
+  box-shadow: 0 4px 20px rgba(51,152,219,0.5);
+  /* background: linear-gradient(90deg, #47ace7 0%, #3398db 100%); */
 }
 .btn-secondary {
   background: #daeaf6;
@@ -130,13 +140,12 @@ html, body {
   width: 5rem;
   height: 5rem;
   box-shadow: 0 6px 24px rgba(51,152,219,0.52);
-  /* box-shadow: var(--shadow); */
   font-weight: bolder;
   position: fixed;
   bottom: 2rem;
   left: 5%;
-  /* left: 50%; */
   z-index: 1000;
+  transition: transform 0.3s ease;
 }
 
 /*********** Theme Toggle Button ***********/
@@ -144,21 +153,29 @@ html, body {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background: var(--surface);
-  border: 1.5px solid white;
+  background: transparent;
+  border: 1.5px solid var(--accent);
   box-shadow: white;
-  position: absolute;
-  right: 4em;
   cursor: pointer;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke="black"/><path d="M12 2v2m0 16v2m8-10h2M2 12H4m15.07-7.07l-1.42 1.42M5.95 18.05l-1.42 1.42m0-15.56l1.42 1.42M18.05 18.05l1.42 1.42" stroke="black"/></svg>');
+  /* background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke="black"/><path d="M12 2v2m0 16v2m8-10h2M2 12H4m15.07-7.07l-1.42 1.42M5.95 18.05l-1.42 1.42m0-15.56l1.42 1.42M18.05 18.05l1.42 1.42" stroke="black"/></svg>'); */
   background-position: center;
   background-repeat: no-repeat;
   transition: background var(--transition), border-color var(--transition);
 }
-[data-theme="dark"] .theme-toggle-btn {
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke="white"/><path d="M12 2v2m0 16v2m8-10h2M2 12H4m15.07-7.07l-1.42 1.42M5.95 18.05l-1.42 1.42m0-15.56l1.42 1.42M18.05 18.05l1.42 1.42" stroke="white"/></svg>');
-  border-color: #1f3447;
+
+.theme-toggle-btn .theme-icon::before {
+  content: "☀️";
+  display: inline-block;
+  font-size: 1.4rem;
+  color: var(--accent);
+  transition: color var(--transition);
 }
+
+[data-theme="dark"] .theme-toggle-btn .theme-icon::before {
+  content: "🌙";
+  color: #ffd86a;  /* Bright yellow moon for contrast */
+}
+
 /* sucess popup */
 .popup-success {
   position: fixed;
@@ -175,6 +192,7 @@ html, body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.28s, transform 0.28s;
+  will-change: opacity, transform;
 }
 .popup-success.show {
   opacity: 1;
