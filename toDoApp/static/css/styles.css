@@ -150,8 +150,6 @@ html, body {
 
 /*********** Theme Toggle Button ***********/
 .theme-toggle-btn {
-  width: 2.5rem;
-  height: 2.5rem;
   border-radius: 50%;
   background: transparent;
   border: 1.5px solid var(--accent);
@@ -164,7 +162,7 @@ html, body {
 }
 
 .theme-toggle-btn .theme-icon::before {
-  content: "☀️";
+  content: "🌙";
   display: inline-block;
   font-size: 1.4rem;
   color: var(--accent);
@@ -172,7 +170,7 @@ html, body {
 }
 
 [data-theme="dark"] .theme-toggle-btn .theme-icon::before {
-  content: "🌙";
+  content: "☀️";
   color: #ffd86a;  /* Bright yellow moon for contrast */
 }
 
@@ -204,7 +202,7 @@ html, body {
 .popup-close-btn {
   position:relative;
   top: -20px;
-  left: 340px;
+  left: 95%;
   background: transparent;
   border: none;
   font-size: 1.8rem;

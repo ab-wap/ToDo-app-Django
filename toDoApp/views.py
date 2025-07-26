@@ -8,26 +8,48 @@ from .forms import TodoForm, RegisterForm, LoginForm
 from .models import Todos
 from django.contrib import messages
 from datetime import date
+from django.db.models import Q
 
 # Create your views here.
 @login_required(login_url='login')
 def home_view(request):
-    todos_active = Todos.objects.filter(user=request.user, completed=False).order_by('-updated_at')
-    todos_completed = Todos.objects.filter(user=request.user, completed=True).order_by('-updated_at')
-    return render(request, 'home.html', {'todos_active': todos_active, 'todos_completed': todos_completed, 'today': date.today()})
+    todos = Todos.objects.filter(user=request.user)
 
-# @login_required(login_url='login')
-# def filter_view(request, filter):
-#     if filter == 'active':
-#         todos = Todos.objects.filter(user=request.user, completed=False).order_by('-updated_at')
-#     elif filter == 'completed':
-#         todos = Todos.objects.filter(user=request.user, completed=True).order_by('-updated_at')
-#     elif filter == 'today':
-#         todos = Todos.objects.filter(user=request.user, due_date=date.today()).order_by('-updated_at')
-#     elif filter == 'overdue':
-#         todos = Todos.objects.filter(user=request.user, due_date__lt=date.today()).order_by('-updated_at')
-#     else:
-#         return render(request, 'home.html', {'todos_active': todos, 'todos_completed': [], 'today': date.today()})
+    # Search by title or description query param
+    search_query = request.GET.get('search', '').strip()
+    if search_query:
+        todos = todos.filter(
+            Q(title__icontains=search_query) | Q(description__icontains=search_query)
+        )
+
+    # Filter by priority (expects 'low', 'medium', or 'high')
+    priority_filter = request.GET.get('priority', '').lower()
+    if priority_filter in ['low', 'medium', 'high']:
+        todos = todos.filter(priority=priority_filter)
+
+    # Optional: Filter by completion status if desired (e.g. active/completed filter)
+    status_filter = request.GET.get('status', '').lower()
+    if status_filter == 'active':
+        todos = todos.filter(completed=False)
+    elif status_filter == 'completed':
+        todos = todos.filter(completed=True)
+    else:
+        # default to all; or could skip this block if no param
+        pass
+
+    # Separate active and completed tasks for template context
+    todos_active = todos.filter(completed=False).order_by('-updated_at')
+    todos_completed = todos.filter(completed=True).order_by('-updated_at')
+
+    context = {
+        'todos_active': todos_active,
+        'todos_completed': todos_completed,
+        'today': date.today(),
+        'search': search_query,
+        'priority': priority_filter,
+        'status': status_filter,
+    }
+    return render(request, 'home.html', context)
 
 @login_required(login_url='login')
 def add_view(request):
