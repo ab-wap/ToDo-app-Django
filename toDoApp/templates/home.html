@@ -31,7 +31,7 @@
   </div>
 
   <!-- Search and Filters Form -->
-  <div class="task-detail-row">
+  <div class="task-detail-row" style="width: 50%; margin: auto">
     <form method="GET" action="{% url 'home' %}" class="filter-search-form" style="margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center;">
       <!-- Search Input -->
       <input 
@@ -104,7 +104,6 @@
                     no description...
                   {% endif %}
                 </span>
-                
               </div>
               <div class="fancy-task-extra" style="background: transparent; box-shadow: none;">
                 <span class="fancy-task-meta">last updated : {{ todo.updated_at }}</span>

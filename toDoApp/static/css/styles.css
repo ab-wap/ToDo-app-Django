@@ -17,7 +17,7 @@
   --border: #395470;
   --font: #f6fafd;
   --font-faded: rgba(246,250,253,0.42);
-  --shadow: 0 6px 34px rgba(51,152,219, 0.25);
+  --shadow: 0 6px 24px rgba(51,152,219, 0.25);
 }
 
 html{
@@ -265,7 +265,7 @@ html, body {
   position: relative;
   animation: fadeInUp 0.48s var(--transition);
   cursor: pointer;
-
+  border: 1px solid rgba(100, 145, 205, 0.2);
 }
 .fancy-task-item:hover {
   box-shadow: 0 8px 24px rgba(51,152,219,0.30), 0 1px 10px #50b1e740;
@@ -304,7 +304,6 @@ html, body {
   display: block;
   transition: max-height 0.35s var(--transition), white-space 0.32s, background-color 0.32s;
   background: none;
-  border-radius: 7px;
   padding: 2px 2px;
   cursor: pointer;
   overflow-wrap: anywhere;
@@ -399,19 +398,19 @@ html, body {
 
 /* --- Priority Highlights --- */
 .priority-low {
-  border-right: 6px solid #80cfa4;
-  border-left: 6px solid #80cfa4;
-  background: linear-gradient(90deg, #e8fdf1 0%, transparent 80%);
+  border: 1px solid #c1eed6;
+  /* border-left: 1px solid #80cfa4; */
+  background: linear-gradient(270deg, #e8fdf1 0%, transparent 80%);
 }
 .priority-medium {
-  border-right: 6px solid #f4d35e;
-  border-left: 6px solid #f4d35e;
-  background: linear-gradient(90deg, #fefae0 0%, transparent 80%);
+  border: 1px solid #f4d35e;
+  /* border-left: 1px solid #f4d35e; */
+  background: linear-gradient(270deg, #fefae0 0%, transparent 80%);
 }
 .priority-high {
-  border-right: 6px solid #e75b4a;
-  border-left: 6px solid #e75b4a;
-  background: linear-gradient(90deg, #feecec 0%, transparent 80%);
+  border: 1px solid #f4c6c1;
+  /* border-left: 1px solid #e75b4a; */
+  background: linear-gradient(270deg, #feecec 0%, transparent 80%);
 }
 
 /* --- Overdue task highlight (will override priority bg) --- */
@@ -437,18 +436,18 @@ html, body {
 }
 /* --- DARK MODE VARIANTS --- */
 [data-theme="dark"] .priority-low {
-  border-right: 6px solid #389c72;
-  border-left: 6px solid #389c72;
+  border: 2px solid #389c72;
+  /* border-left: 2px solid #389c72; */
   background: linear-gradient(0deg, #389c72 0%, transparent 1%);
 }
 [data-theme="dark"] .priority-medium {
-  border-right: 6px solid #a98e46;
-  border-left: 6px solid #a98e46;
+  border: 2px solid #a98e46;
+  /* border-left: 2px solid #a98e46; */
   background: linear-gradient(0deg, #a98e46 0%, transparent 1%);
 }
 [data-theme="dark"] .priority-high {
-  border-right: 6px solid #a75d52;
-  border-left: 6px solid #a75d52;
+  border: 2px solid #a75d52;
+  /* border-left: 2px solid #a75d52; */
   background: linear-gradient(0deg, #a75d52 0%, transparent 1%);
 }
 /* [data-theme="dark"] .overdue-task {
