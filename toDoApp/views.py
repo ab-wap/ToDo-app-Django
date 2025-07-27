@@ -9,6 +9,9 @@ from .models import Todos
 from django.contrib import messages
 from datetime import date
 from django.db.models import Q
+# from django.template.loader import render_to_string
+# from django.http import JsonResponse
+# from django.views.decorators.http import require_POST
 
 # Create your views here.
 @login_required(login_url='login')
@@ -26,6 +29,11 @@ def home_view(request):
     priority_filter = request.GET.get('priority', '').lower()
     if priority_filter in ['low', 'medium', 'high']:
         todos = todos.filter(priority=priority_filter)
+
+    # Filter tasks with due_date equal to the selected date
+    due_date_filter = request.GET.get('due_date', '').strip()
+    if due_date_filter:
+        todos = todos.filter(due_date=due_date_filter)
 
     # Optional: Filter by completion status if desired (e.g. active/completed filter)
     status_filter = request.GET.get('status', '').lower()
@@ -47,6 +55,7 @@ def home_view(request):
         'today': date.today(),
         'search': search_query,
         'priority': priority_filter,
+        'due_date': due_date_filter,
         'status': status_filter,
     }
     return render(request, 'home.html', context)

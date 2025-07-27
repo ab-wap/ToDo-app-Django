@@ -27,52 +27,61 @@
     <button class="btn btn-primary add-task-btn" style="margin: auto; display: block;" onclick="location.href='{% url 'add' %}'">
       +
     </button>
-  {% comment %} <button class="theme-toggle-btn" id="themeToggle" title="Toggle Light/Dark Mode"></button> {% endcomment %}
   </div>
 
   <!-- Search and Filters Form -->
   <div class="task-detail-row" style="width: 50%; margin: auto">
     <form method="GET" action="{% url 'home' %}" class="filter-search-form" style="margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center;">
       <!-- Search Input -->
-      <input 
-        type="text" 
-        name="search" 
-        placeholder="Search tasks..." 
-        value="{{ search|default:'' }}" 
-        class="task-search-input" 
-        aria-label="Search tasks"
-        autocomplete="off"
-        style="padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 1rem; min-width: 220px;"
-      />
+      <div style="display: flex; align-items: center; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; min=width: 220px;">
+        <input 
+          type="text" 
+          name="search" 
+          placeholder="Search tasks..." 
+          value="{{ search|default:'' }}" 
+          class="task-search-input" 
+          aria-label="Search tasks"
+          autocomplete="off"
+          style="display: flex; margin-left: 4px; padding: 8px 12px;  font-size: 1rem; min-width: 220px;"
+        />
+        <button type="submit" aria-label="Submit search" style="background: none; border: none; cursor: pointer; padding: 8px 12px; color: var(--accent);">
+          <span class="material-icons" style="font-size: 1.4rem; line-height: 1;">search</span>
+        </button>
+      </div>
 
-      <!-- Priority Filter Dropdown -->
-      <select name="priority" aria-label="Filter by priority" 
-        class="form-control"
-        style="width: 20%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 1rem; min-width: 140px;">
-        <option value="" {% if not priority %}selected{% endif %}>All Priorities</option>
-        <option value="low" {% if priority == 'low' %}selected{% endif %}>Low</option>
-        <option value="medium" {% if priority == 'medium' %}selected{% endif %}>Medium</option>
-        <option value="high" {% if priority == 'high' %}selected{% endif %}>High</option>
-      </select>
+      <div style="display:flex; align-items: center; gap: 0.5rem;">
+        <!-- Priority Filter Dropdown -->
+        <select name="priority" aria-label="Filter by priority"
+          onchange="this.form.submit()" 
+          class="form-control"
+          style="width: 20%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 1rem; min-width: 140px;">
+          <option value="" {% if not priority %}selected{% endif %}>All Priorities</option>
+          <option value="low" {% if priority == 'low' %}selected{% endif %}>Low</option>
+          <option value="medium" {% if priority == 'medium' %}selected{% endif %}>Medium</option>
+          <option value="high" {% if priority == 'high' %}selected{% endif %}>High</option>
+        </select>
 
-      <!-- Status Filter Dropdown -->
-      <select name="status" aria-label="Filter by status" 
-        class="form-control"
-        style="width: 20%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 1rem; min-width: 140px;">
-        <option value="" {% if not status %}selected{% endif %}>All Statuses</option>
-        <option value="active" {% if status == 'active' %}selected{% endif %}>Active</option>
-        <option value="completed" {% if status == 'completed' %}selected{% endif %}>Completed</option>
-      </select>
-
-      <!-- Submit button -->
-      <button type="submit" class="btn btn-primary" style="padding: 9px 18px; font-weight: 600; font-size: 1rem;">
-        Apply
-      </button>
-
-      <!-- Optional Reset button -->
-      <a href="{% url 'home' %}" class="btn btn-secondary" style="padding: 9px 18px; font-weight: 600; font-size: 1rem; margin-left: auto;">
-        Reset
-      </a>
+        <!-- Status Filter Dropdown -->
+        <select name="status" aria-label="Filter by status" 
+          onchange="this.form.submit()"
+          class="form-control"
+          style="width: 20%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 1rem; min-width: 140px;">
+          <option value="" {% if not status %}selected{% endif %}>All Statuses</option>
+          <option value="active" {% if status == 'active' %}selected{% endif %}>Active</option>
+          <option value="completed" {% if status == 'completed' %}selected{% endif %}>Completed</option>
+        </select>  
+        
+        <!-- Due Date Filter -->
+        <input 
+          type="date" 
+          name="due_date" 
+          aria-label="Filter by due date"
+          value="{{ due_date|default:'' }}"
+          onchange="this.form.submit()"
+          class="form-control"
+          style="width: 20%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 1rem; min-width: 140px;"
+        />
+      </div>
     </form>  
   </div>
   
@@ -80,7 +89,6 @@
 
   <div class="tasks-section">
     {% if todos_active %}
-      
       <ul class="fancy-task-list">
         <h2 class="section-title">Active</h2><br>
         {% for todo in todos_active %}
@@ -106,21 +114,41 @@
                 </span>
               </div>
               <div class="fancy-task-extra" style="background: transparent; box-shadow: none;">
-                <span class="fancy-task-meta">last updated : {{ todo.updated_at }}</span>
-                <span class="fancy-task-meta">Priority: {{ todo.get_priority_display }}</span>
-                {% if todo.due_date %}
-                  <span class="fancy-task-meta">Due: {{ todo.due_date }}</span>
-                {% else %}
-                  <span class="fancy-task-meta">No due date</span>
-                {% endif %}
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr>
+                    <td class="fancy-task-meta" style="text-align: right; padding-right: 0.25rem; white-space: nowrap;">
+                      last updated:
+                    </td>
+                    <td>
+                      <span class="fancy-task-meta">{{ todo.updated_at }}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fancy-task-meta" style="text-align: right; padding-right: 0.25rem; white-space: nowrap;">
+                      Priority:
+                    </td>
+                    <td>
+                      <span class="fancy-task-meta">{{ todo.get_priority_display }}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fancy-task-meta" style="text-align: right; padding-right: 0.25rem; white-space: nowrap;">
+                      Due:
+                    </td>
+                    <td>
+                      {% if todo.due_date %}
+                        <span class="fancy-task-meta">{{ todo.due_date }}</span>
+                      {% else %}
+                        <span class="fancy-task-meta">No due date</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
             <a href="{% url 'update' todo.id %}" class="edit-icon-btn" title="Edit Task" onclick="event.stopPropagation();">
               <span class="material-icons">edit</span>
             </a>
-            {% comment %} <button class="delete-icon-btn" title="Delete Task" onclick="event.stopPropagation(); showConfirmDialog(() => { document.getElementById('delete-form-{{ todo.id }}').submit(); })">
-              <span class="material-icons">delete</span>
-            </button> {% endcomment %}
             <button type="button" class="delete-icon-btn" title="Delete Task" onclick="event.stopPropagation(); showConfirmDialog(function(){ document.getElementById('delete-form-{{ todo.id }}').submit(); });">
               <span class="material-icons">delete</span>
             </button>
@@ -130,8 +158,8 @@
           </li>
         {% endfor %}
       </ul>
-    {% else %}
-      <h3 style="color: var(--font-faded);"><br>No active tasks found. Click the plus icon to add a task</h3>
+    {% elif not todos_completed %}
+      <h3 style="color: var(--font-faded);"><br>No tasks found.</h3>
     {% endif %}
   </div>
 
@@ -153,15 +181,7 @@
             </form>
             <div class="fancy-task-content">
               <span class="fancy-task-title">{{ todo.title }}</span>
-              {% comment %} <span class="fancy-task-desc">{{ todo.description }}</span>
-              <span class="fancy-task-meta"> {{ todo.updated_at }}</span> {% endcomment %}
             </div>
-            {% comment %} <form method="POST" action="{% url 'delete' todo.id %}" class="delete-icon-form" onclick="event.stopPropagation();">
-              {% csrf_token %}
-              <button type="submit" class="delete-icon-btn" title="Delete Task">
-                <span class="material-icons">delete</span>
-              </button>
-            </form> {% endcomment %}
           </li>
         {% endfor %}
       </ul>
@@ -212,6 +232,7 @@
       closeBtn.addEventListener('click', closeHandler);
     }
   </script>
+
 {% endblock %}
 
 
