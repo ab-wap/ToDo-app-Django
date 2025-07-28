@@ -9,6 +9,7 @@ from .models import Todos
 from django.contrib import messages
 from datetime import date
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 # from django.template.loader import render_to_string
 # from django.http import JsonResponse
 # from django.views.decorators.http import require_POST
@@ -75,18 +76,20 @@ def add_view(request):
 
 @login_required(login_url='login')
 def delete_view(request, todo_id):
-    todo = Todos.objects.get(id=todo_id, user=request.user)
+    # todo = Todos.objects.get(id=todo_id, user=request.user)
+    todo = get_object_or_404(Todos, id=todo_id, user=request.user)
     if not todo:
         return redirect('home')
     if request.method == 'POST':
         todo.delete()
         messages.success(request, 'Task deleted!')
         return redirect('home')
-    return render(request, 'confirm_delete.html', {'todo': todo})
+    # return render(request, 'confirm_delete.html', {'todo': todo})
 
 @login_required(login_url='login')
 def update_view(request, todo_id):
-    todo = Todos.objects.get(id=todo_id, user=request.user)
+    # todo = Todos.objects.get(id=todo_id, user=request.user)
+    todo = get_object_or_404(Todos, id=todo_id, user=request.user)
     if not todo:
         return redirect('home')
     form = TodoForm(instance=todo)
@@ -100,7 +103,8 @@ def update_view(request, todo_id):
 
 @login_required(login_url='login')
 def toggle_view(request, todo_id):
-    todo = Todos.objects.get(id=todo_id)
+    # todo = Todos.objects.get(id=todo_id, user=request.user)
+    todo = get_object_or_404(Todos, id=todo_id, user=request.user)
     todo.completed = not todo.completed
     todo.save()
     return redirect('home')
@@ -138,3 +142,17 @@ def logout_view(request):
         return redirect('login')
     else: 
         return redirect('home')
+    
+# views for error handling
+
+def error_400_view(request, exception):
+    return render(request, 'errors/400.html', status=400)
+
+def error_403_view(request, exception):
+    return render(request, 'errors/403.html', status=403)
+
+def error_404_view(request, exception):
+    return render(request, 'errors/404.html', status=404)
+
+def error_500_view(request):
+    return render(request, 'errors/500.html', status=500)

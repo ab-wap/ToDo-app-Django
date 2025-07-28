@@ -90,7 +90,7 @@
   <div class="tasks-section">
     {% if todos_active %}
       <ul class="fancy-task-list">
-        <h2 class="section-title">Active</h2><br>
+        <h2 class="section-title">Active Tasks</h2><br>
         {% for todo in todos_active %}
           <li class="fancy-task-item 
                     {% if todo.priority == 'low' %} priority-low{% endif %}
@@ -109,7 +109,7 @@
                   {% if todo.description %}
                     {{ todo.description }}
                   {% else %}
-                    no description...
+                    NO DESCRIPTION...
                   {% endif %}
                 </span>
               </div>
@@ -167,7 +167,7 @@
     {% if todos_completed %}
       
       <ul class="fancy-task-list completed">
-        <h2 class="section-title"><br>Completed</h2><br>
+        <h2 class="section-title"><br>Completed Tasks</h2><br>
         {% for todo in todos_completed %}
           <li class="fancy-task-item 
                     {% if todo.priority == 'low' %} priority-low{% endif %}

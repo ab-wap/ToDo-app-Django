@@ -17,7 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+# Importing settings for static files
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('toDoApp.urls')),
 ]
+
+handler400 = 'toDoApp.views.error_400_view'
+handler403 = 'toDoApp.views.error_403_view'
+handler404 = 'toDoApp.views.error_404_view'
+handler500 = 'toDoApp.views.error_500_view'
+
+if not settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
